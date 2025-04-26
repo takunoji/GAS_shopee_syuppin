@@ -1,0 +1,56 @@
+<!-- SettingsForm.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+  </head>
+  <body>
+    <form id="settingsForm">
+      <label for="partnerId">パートナーID:</label><br />
+      <input
+        type="text"
+        id="partnerId"
+        name="partnerId"
+        value="<?= partnerId ?>"
+      /><br />
+      <label for="partnerKey">パートナーキー:</label><br />
+      <input
+        type="text"
+        id="partnerKey"
+        name="partnerKey"
+        value="<?= partnerKey ?>"
+      /><br />
+      <label for="redirectUrl">リダイレクトURL:</label><br />
+      <input
+        type="text"
+        id="redirectUrl"
+        name="redirectUrl"
+        value="<?= redirectUrl ?>"
+      /><br /><br />
+      <input type="button" value="保存" onclick="saveSettings()" />
+    </form>
+    <script>
+      function saveSettings() {
+        const form = document.getElementById("settingsForm");
+        const data = {
+          partnerId: form.partnerId.value,
+          partnerKey: form.partnerKey.value,
+          redirectUrl: form.redirectUrl.value,
+        };
+
+        // 確認用ダイアログを追加
+        console.log("送信データ:", data);
+
+        google.script.run
+          .withSuccessHandler(function (message) {
+            alert(message || "設定が保存されました");
+            google.script.host.close();
+          })
+          .withFailureHandler(function (error) {
+            alert("エラー: " + error.message);
+          })
+          .setScriptPropertiesFromForm(data);
+      }
+    </script>
+  </body>
+</html>

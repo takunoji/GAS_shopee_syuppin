@@ -1,0 +1,34 @@
+<!-- BackendSettingForm.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+</head>
+
+<body>
+  <form id="backendForm">
+    <label for="backendUrl">バックエンドのデプロイURL:</label><br>
+    <input type="text" id="backendUrl" name="backendUrl" value="<?= backendUrl ?>" style="width: 100%"><br><br>
+    <input type="button" value="保存" onclick="saveBackendSettings()">
+  </form>
+  <script>
+    function saveBackendSettings() {
+      const form = document.getElementById('backendForm');
+      const data = {
+        backendUrl: form.backendUrl.value
+      };
+      google.script.run
+        .withSuccessHandler(function (message) {
+          alert(message);
+          google.script.host.close();
+        })
+        .withFailureHandler(function (error) {
+          alert("エラー: " + error.message);
+        })
+        .saveBackendUrl(data);
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!-- ShopSelectionDialog2.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <base target="_top">
+</head>
+
+<body>
+  チェック行のASINに対して処理を実行します
+  </br>
+  ①KeepaでAmazon情報の取得(C～AD列)
+  </br>
+  ②出品用データの仮生成(AE～AZ列)
+  </br>
+  ※収集後、画像データの差し替え(O～V列)等を行ってください
+  <form id="shopForm">
+    </br>
+    <button type="button" id="submitButton" onclick="submitForm()">実行</button>
+  </form>
+  <div id="statusMessage"></div> <!-- メッセージを表示するための場所を追加 -->
+
+  <script>
+    function submitForm() {
+      // 実行ボタンを無効にして、メッセージを表示
+      document.getElementById('submitButton').disabled = true;
+      document.getElementById('statusMessage').innerHTML = '処理中です…';
+
+      google.script.run
+        .withSuccessHandler(function () {
+          document.getElementById('statusMessage').innerHTML = '処理が完了しました。';
+          google.script.host.close();
+        })
+        .withFailureHandler(function (error) {
+          document.getElementById('statusMessage').innerHTML = 'エラー: ' + error.message;
+          document.getElementById('submitButton').disabled = false;
+        })
+        .processMakeData();
+    }
+  </script>
+</body>
+
+</html>
